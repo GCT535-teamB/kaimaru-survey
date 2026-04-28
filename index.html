@@ -588,6 +588,9 @@ function startSurvey() {
 }
 
 function goTo(sectionId) {
+  // Pause all videos before switching sections
+  document.querySelectorAll('video').forEach(v => { v.pause(); v.currentTime = 0; });
+
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.getElementById(sectionId).classList.add('active');
   window.scrollTo({ top: 0, behavior: 'smooth' });
