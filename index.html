@@ -392,15 +392,15 @@
   <div class="section" id="sec-audio1">
     <div class="section-label" id="label1">Sound A</div>
     <h2>소리 환경 평가</h2>
-    <p class="desc">제시되는 오디오에서 들리는 카이마루의 소리 환경(분위기)이 다음 단어들과 얼마나 일치한다고 생각하시나요?<br>
+    <p class="desc">제시되는 영상에서 들리는 카이마루의 소리 환경(분위기)이 다음 단어들과 얼마나 일치한다고 생각하시나요?<br>
     <span style="font-size:13px; color:#999;">To what extent do you agree that this sound environment is:</span></p>
 
     <div class="audio-wrapper">
-      <div class="audio-label" id="audio-label-1">Audio</div>
-      <audio id="audio1" controls preload="auto">
-        <source id="audio1-src" src="" type="audio/wav">
-      </audio>
-      <div class="audio-placeholder" id="audio1-placeholder">Audio file will be added</div>
+      <div class="audio-label" id="audio-label-1">Video</div>
+      <video id="audio1" controls preload="auto" style="width:100%; max-width:480px; border-radius:8px;">
+        <source id="audio1-src" src="" type="video/mp4">
+      </video>
+      <div class="audio-placeholder" id="audio1-placeholder">Video file will be added</div>
     </div>
 
     <p class="desc" style="font-size:12px; text-align:center; color:#aaa;">1 = 전혀 동의하지 않음 (Strongly Disagree) &nbsp;&nbsp; 5 = 매우 동의함 (Strongly Agree)</p>
@@ -419,15 +419,15 @@
   <div class="section" id="sec-audio2">
     <div class="section-label" id="label2">Sound B</div>
     <h2>소리 환경 평가</h2>
-    <p class="desc">제시되는 오디오에서 들리는 카이마루의 소리 환경(분위기)이 다음 단어들과 얼마나 일치한다고 생각하시나요?<br>
+    <p class="desc">제시되는 영상에서 들리는 카이마루의 소리 환경(분위기)이 다음 단어들과 얼마나 일치한다고 생각하시나요?<br>
     <span style="font-size:13px; color:#999;">To what extent do you agree that this sound environment is:</span></p>
 
     <div class="audio-wrapper">
-      <div class="audio-label" id="audio-label-2">Audio</div>
-      <audio id="audio2" controls preload="auto">
-        <source id="audio2-src" src="" type="audio/wav">
-      </audio>
-      <div class="audio-placeholder" id="audio2-placeholder">Audio file will be added</div>
+      <div class="audio-label" id="audio-label-2">Video</div>
+      <video id="audio2" controls preload="auto" style="width:100%; max-width:480px; border-radius:8px;">
+        <source id="audio2-src" src="" type="video/mp4">
+      </video>
+      <div class="audio-placeholder" id="audio2-placeholder">Video file will be added</div>
     </div>
 
     <p class="desc" style="font-size:12px; text-align:center; color:#aaa;">1 = 전혀 동의하지 않음 (Strongly Disagree) &nbsp;&nbsp; 5 = 매우 동의함 (Strongly Agree)</p>
@@ -462,8 +462,8 @@
 // ============================================================
 
 // 1) Audio file paths (place files in the /audio folder)
-const AUDIO_BEFORE = 'audio/before.wav';
-const AUDIO_AFTER  = 'audio/after.wav';
+const AUDIO_BEFORE = 'video/before.mp4';
+const AUDIO_AFTER  = 'video/after.mp4';
 
 // 2) Google Apps Script Web App URL (see README for setup instructions)
 const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwEPBtnoisdERA8MWpOb_OdlHW6Fmq0IngfdrXJVtOHLGmxS1iI7MQD9dpVQ2PfZTtr/exec';
