@@ -467,19 +467,18 @@ const AUDIO_AFTER  = 'audio/after.wav';
 
 // 2) Google Apps Script Web App URL (see README for setup instructions)
 const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwEPBtnoisdERA8MWpOb_OdlHW6Fmq0IngfdrXJVtOHLGmxS1iI7MQD9dpVQ2PfZTtr/exec';
-
 // ============================================================
 
 const QUESTIONS = [
-  { ko: '쾌적한',                         en: 'Pleasant' },
-  { ko: '혼란스러운',                      en: 'Chaotic' },
-  { ko: '활기찬',                          en: 'Vibrant' },
-  { ko: '정적인 (아무 일 없는)',            en: 'Uneventful' },
-  { ko: '차분한',                          en: 'Calm' },
-  { ko: '짜증나는 (거슬리는)',              en: 'Annoying' },
-  { ko: '역동적인 (다양한 소리가 나는)',     en: 'Eventful' },
-  { ko: '단조로운',                         en: 'Monotonous' },
-  { ko: '카이마루만의 특징적인',             en: 'Unique to Kaimaru' },
+  { ko: '쾌적한', en: 'Pleasant' },
+  { ko: '혼란스러운', en: 'Chaotic' },
+  { ko: '활기찬', en: 'Vibrant' },
+  { ko: '정적인 (아무 일 없는)', en: 'Uneventful' },
+  { ko: '차분한', en: 'Calm' },
+  { ko: '짜증나는 (거슬리는)', en: 'Annoying' },
+  { ko: '역동적인 (다양한 소리가 나는)', en: 'Eventful' },
+  { ko: '단조로운', en: 'Monotonous' },
+  { ko: '카이마루만의 특징적인', en: 'Unique to Kaimaru' },
 ];
 
 const OVERALL_Q = {
@@ -689,18 +688,49 @@ async function submitSurvey() {
   // Show loading
   document.getElementById('loading').classList.add('show');
 
+  // Use hidden form + iframe for reliable Google Apps Script submission
   try {
-    await fetch(GOOGLE_SCRIPT_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      body: JSON.stringify(data),
+    const iframe = document.createElement('iframe');
+    iframe.name = 'submit-frame';
+    iframe.style.display = 'none';
+    document.body.appendChild(iframe);
+
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = GOOGLE_SCRIPT_URL;
+    form.target = 'submit-frame';
+
+    // Add each data field as a hidden input
+    Object.entries(data).forEach(([key, value]) => {
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = key;
+      input.value = value;
+      form.appendChild(input);
     });
-    showThanks();
+
+    document.body.appendChild(form);
+    form.submit();
+
+    // Wait for iframe to load, then show thanks
+    iframe.addEventListener('load', () => {
+      document.getElementById('loading').classList.remove('show');
+      showThanks();
+      // Cleanup
+      document.body.removeChild(form);
+      document.body.removeChild(iframe);
+    });
+
+    // Fallback timeout in case iframe load doesn't fire
+    setTimeout(() => {
+      document.getElementById('loading').classList.remove('show');
+      showThanks();
+    }, 3000);
+
   } catch (err) {
     console.error('Submit error:', err);
-    alert('제출 중 오류가 발생했습니다. 다시 시도해주세요.\nSubmission error. Please try again.');
-  } finally {
     document.getElementById('loading').classList.remove('show');
+    alert('제출 중 오류가 발생했습니다. 다시 시도해주세요.\nSubmission error. Please try again.');
   }
 }
 

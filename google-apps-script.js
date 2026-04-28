@@ -19,7 +19,13 @@
 function doPost(e) {
   try {
     var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-    var data = JSON.parse(e.postData.contents);
+    // Support both form data and JSON
+    var data;
+    if (e.parameter && e.parameter.timestamp) {
+      data = e.parameter;
+    } else {
+      data = JSON.parse(e.postData.contents);
+    }
 
     // Set up headers on first run
     if (sheet.getLastRow() === 0) {
