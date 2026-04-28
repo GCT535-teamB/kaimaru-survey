@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Sounds of KAIMARU</title>
+  <style>
+    :root {
+      --primary: #004c8c;
+      --primary-light: #e8f0fa;
+      --accent: #d4a843;
+      --bg: #f7f8fa;
+      --card: #ffffff;
+      --text: #222;
+      --text-light: #666;
+      --border: #dde2e8;
+      --radius: 12px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 24px 20px 60px;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 40px 0 32px;
+    }
+
+    .header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    .header .subtitle {
+      font-size: 14px;
+      color: var(--accent);
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    /* Intro card */
+    .intro {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 28px;
+      margin-bottom: 28px;
+      border: 1px solid var(--border);
+    }
+
+    .intro p {
+      font-size: 14.5px;
+      color: var(--text-light);
+      margin-bottom: 12px;
+    }
+
+    .intro p:last-child { margin-bottom: 0; }
+
+    .intro .team {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* Progress bar */
+    .progress-bar {
+      background: var(--border);
+      border-radius: 6px;
+      height: 6px;
+      margin-bottom: 28px;
+      overflow: hidden;
+    }
+
+    .progress-bar .fill {
+      height: 100%;
+      background: var(--primary);
+      border-radius: 6px;
+      transition: width 0.4s ease;
+    }
+
+    /* Section */
+    .section {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 28px;
+      margin-bottom: 20px;
+      border: 1px solid var(--border);
+      display: none;
+    }
+
+    .section.active { display: block; }
+
+    .section-label {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--primary);
+      background: var(--primary-light);
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+    }
+
+    .section h2 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    .section .desc {
+      font-size: 14px;
+      color: var(--text-light);
+      margin-bottom: 20px;
+    }
+
+    /* Audio player */
+    .audio-wrapper {
+      background: var(--primary-light);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .audio-wrapper .audio-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+
+    .audio-wrapper audio {
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .audio-placeholder {
+      font-size: 13px;
+      color: #999;
+      padding: 12px;
+    }
+
+    /* Likert */
+    .question {
+      margin-bottom: 24px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .question:last-of-type {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .question-text {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .question-text-en {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-bottom: 14px;
+    }
+
+    .likert {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .likert-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #999;
+      margin-top: 6px;
+    }
+
+    .likert label {
+      flex: 1;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .likert input[type="radio"] {
+      display: none;
+    }
+
+    .likert .radio-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      margin: 0 auto;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-light);
+      transition: all 0.2s;
+    }
+
+    .likert input[type="radio"]:checked + .radio-btn {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .likert label:hover .radio-btn {
+      border-color: var(--primary);
+    }
+
+    /* Buttons */
+    .btn-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .btn {
+      padding: 12px 32px;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .btn-primary:hover { background: #003a6e; }
+
+    .btn-secondary {
+      background: var(--border);
+      color: var(--text);
+    }
+
+    .btn-secondary:hover { background: #ccd2d9; }
+
+    .btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    /* Thank you */
+    .thank-you {
+      text-align: center;
+      padding: 60px 20px;
+      display: none;
+    }
+
+    .thank-you.active { display: block; }
+
+    .thank-you .check {
+      width: 64px;
+      height: 64px;
+      background: #e6f4ea;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 32px;
+    }
+
+    .thank-you h2 {
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+
+    .thank-you p {
+      color: var(--text-light);
+      font-size: 15px;
+    }
+
+    /* Validation warning */
+    .question.incomplete .question-text {
+      color: #c0392b;
+    }
+
+    .question.incomplete .likert .radio-btn {
+      border-color: #e8c4c0;
+    }
+
+    .warning-msg {
+      color: #c0392b;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    .warning-msg.show { display: block; }
+
+    /* Loading overlay */
+    .loading-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(255,255,255,0.85);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .loading-overlay.show {
+      display: flex;
+    }
+
+    .spinner {
+      width: 36px;
+      height: 36px;
+      border: 3px solid var(--border);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      .container { padding: 16px 14px 40px; }
+      .header h1 { font-size: 22px; }
+      .section { padding: 20px; }
+      .likert .radio-btn { width: 38px; height: 38px; font-size: 13px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <div class="subtitle">GCT535 MULTIMEDIA ACOUSTICS</div>
+    <h1>The Sounds of KAIMARU</h1>
+  </div>
+
+  <!-- Intro -->
+  <div class="section active" id="sec-intro">
+    <p>저희는 김성영 교수님의 [GCT535] 멀티미디어 음향기술 수업의 일환으로 카이마루의 사운드스케이프를 분석하고 개선점을 찾기 위한 설문조사를 진행하고 있습니다.</p>
+
+    <p><strong>사운드스케이프(Soundscape)란?</strong><br>
+    국제표준화기구(ISO 12913-1)에 따르면, 사운드스케이프는 "특정한 맥락에서 사람에 의해 인지되거나 경험, 또는 이해되는 음향 환경"으로 정의됩니다.</p>
+
+    <p style="font-size:13.5px; color:#888;">As part of Prof. Sung-young Kim's [GCT535] Multimedia Acoustics class, we are conducting a survey to analyze the soundscape of Kaimaru and identify areas for improvement. According to ISO 12913-1, a soundscape is defined as an "acoustic environment as perceived or experienced and/or understood by a person or people, in context."</p>
+
+    <p>설문은 약 <strong>2~3분</strong> 정도 소요됩니다. 헤드폰 착용을 권장합니다.<br>
+    <span style="font-size:13.5px; color:#888;">The survey takes about <strong>2-3 minutes</strong>. Headphones recommended.</span></p>
+
+    <div class="team">박지현, 김민준, 임주은, Serena, 채지훈 일동 드림</div>
+
+    <div class="btn-row" style="justify-content:flex-end;">
+      <button class="btn btn-primary" onclick="startSurvey()">시작하기 / Start</button>
+    </div>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-bar" id="progress-bar" style="display:none;">
+    <div class="fill" id="progress-fill" style="width:0%"></div>
+  </div>
+
+  <!-- Section 1: First audio -->
+  <div class="section" id="sec-audio1">
+    <div class="section-label" id="label1">Sound A</div>
+    <h2>소리 환경 평가</h2>
+    <p class="desc">제시되는 오디오에서 들리는 카이마루의 소리 환경(분위기)이 다음 단어들과 얼마나 일치한다고 생각하시나요?<br>
+    <span style="font-size:13px; color:#999;">To what extent do you agree that this sound environment is:</span></p>
+
+    <div class="audio-wrapper">
+      <div class="audio-label" id="audio-label-1">Audio</div>
+      <audio id="audio1" controls preload="auto">
+        <source id="audio1-src" src="" type="audio/mpeg">
+      </audio>
+      <div class="audio-placeholder" id="audio1-placeholder">Audio file will be added</div>
+    </div>
+
+    <p class="desc" style="font-size:12px; text-align:center; color:#aaa;">1 = 전혀 동의하지 않음 (Strongly Disagree) &nbsp;&nbsp; 5 = 매우 동의함 (Strongly Agree)</p>
+
+    <div class="warning-msg" id="warn1">모든 항목에 응답해주세요. / Please answer all items.</div>
+
+    <div id="questions1"></div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goTo('sec-intro')">이전 / Back</button>
+      <button class="btn btn-primary" onclick="nextSection(1)">다음 / Next</button>
+    </div>
+  </div>
+
+  <!-- Section 2: Second audio -->
+  <div class="section" id="sec-audio2">
+    <div class="section-label" id="label2">Sound B</div>
+    <h2>소리 환경 평가</h2>
+    <p class="desc">제시되는 오디오에서 들리는 카이마루의 소리 환경(분위기)이 다음 단어들과 얼마나 일치한다고 생각하시나요?<br>
+    <span style="font-size:13px; color:#999;">To what extent do you agree that this sound environment is:</span></p>
+
+    <div class="audio-wrapper">
+      <div class="audio-label" id="audio-label-2">Audio</div>
+      <audio id="audio2" controls preload="auto">
+        <source id="audio2-src" src="" type="audio/mpeg">
+      </audio>
+      <div class="audio-placeholder" id="audio2-placeholder">Audio file will be added</div>
+    </div>
+
+    <p class="desc" style="font-size:12px; text-align:center; color:#aaa;">1 = 전혀 동의하지 않음 (Strongly Disagree) &nbsp;&nbsp; 5 = 매우 동의함 (Strongly Agree)</p>
+
+    <div class="warning-msg" id="warn2">모든 항목에 응답해주세요. / Please answer all items.</div>
+
+    <div id="questions2"></div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goTo('sec-audio1')">이전 / Back</button>
+      <button class="btn btn-primary" onclick="submitSurvey()">제출하기 / Submit</button>
+    </div>
+  </div>
+
+  <!-- Thank you -->
+  <div class="thank-you" id="sec-thanks">
+    <div class="check">&#10003;</div>
+    <h2>감사합니다!</h2>
+    <p>설문에 참여해 주셔서 진심으로 감사드립니다.<br>Thank you for your participation!</p>
+  </div>
+</div>
+
+<!-- Loading overlay -->
+<div class="loading-overlay" id="loading">
+  <div class="spinner"></div>
+  <div style="font-size:14px; color:var(--text-light);">제출 중... / Submitting...</div>
+</div>
+
+<script>
+// ============================================================
+// CONFIGURATION - Edit these to set up audio and Google Sheets
+// ============================================================
+
+// 1) Audio file paths (place files in the /audio folder)
+const AUDIO_BEFORE = 'audio/before.mp3';
+const AUDIO_AFTER  = 'audio/after.mp3';
+
+// 2) Google Apps Script Web App URL (see README for setup instructions)
+const GOOGLE_SCRIPT_URL = '';
+
+// ============================================================
+
+const QUESTIONS = [
+  { ko: '쾌적한',                         en: 'Pleasant' },
+  { ko: '혼란스러운',                      en: 'Chaotic' },
+  { ko: '활기찬',                          en: 'Vibrant' },
+  { ko: '정적인 (아무 일 없는)',            en: 'Uneventful' },
+  { ko: '차분한',                          en: 'Calm' },
+  { ko: '짜증나는 (거슬리는)',              en: 'Annoying' },
+  { ko: '역동적인 (다양한 소리가 나는)',     en: 'Eventful' },
+  { ko: '단조로운',                         en: 'Monotonous' },
+  { ko: '카이마루만의 특징적인',             en: 'Unique to Kaimaru' },
+];
+
+const OVERALL_Q = {
+  ko: '전반적으로 이 소리 환경을 어떻게 평가하시나요?',
+  en: 'Overall, how would you rate this sound environment?',
+  labels: [
+    '매우 나쁨 / Very Bad',
+    '나쁨 / Bad',
+    '보통 / Neither',
+    '좋음 / Good',
+    '매우 좋음 / Very Good'
+  ]
+};
+
+// Randomize order: true = Before first, false = After first
+const beforeFirst = Math.random() < 0.5;
+const order = beforeFirst ? ['before', 'after'] : ['after', 'before'];
+
+function buildQuestions(containerId, prefix) {
+  const container = document.getElementById(containerId);
+  let html = '';
+
+  QUESTIONS.forEach((q, i) => {
+    html += `
+      <div class="question" data-q="${prefix}_q${i}">
+        <div class="question-text">${q.ko}</div>
+        <div class="question-text-en">${q.en}</div>
+        <div class="likert">
+          ${[1,2,3,4,5].map(v => `
+            <label>
+              <input type="radio" name="${prefix}_q${i}" value="${v}">
+              <div class="radio-btn">${v}</div>
+            </label>
+          `).join('')}
+        </div>
+        <div class="likert-labels">
+          <span>전혀 아님</span><span>매우 그러함</span>
+        </div>
+      </div>
+    `;
+  });
+
+  // Overall question
+  html += `
+    <div class="question" data-q="${prefix}_overall" style="margin-top:8px; padding-top:24px; border-top:2px solid var(--primary-light);">
+      <div class="question-text">${OVERALL_Q.ko}</div>
+      <div class="question-text-en">${OVERALL_Q.en}</div>
+      <div class="likert">
+        ${[1,2,3,4,5].map(v => `
+          <label>
+            <input type="radio" name="${prefix}_overall" value="${v}">
+            <div class="radio-btn">${v}</div>
+          </label>
+        `).join('')}
+      </div>
+      <div class="likert-labels">
+        <span>매우 나쁨</span><span>매우 좋음</span>
+      </div>
+    </div>
+  `;
+
+  container.innerHTML = html;
+}
+
+function setupAudio(audioId, srcId, placeholderId, type) {
+  const src = type === 'before' ? AUDIO_BEFORE : AUDIO_AFTER;
+  const srcEl = document.getElementById(srcId);
+  const audioEl = document.getElementById(audioId);
+  const placeholder = document.getElementById(placeholderId);
+
+  srcEl.src = src;
+  audioEl.load();
+
+  // Hide placeholder if audio loads successfully
+  audioEl.addEventListener('canplaythrough', () => {
+    placeholder.style.display = 'none';
+  }, { once: true });
+
+  audioEl.addEventListener('error', () => {
+    placeholder.style.display = 'block';
+    placeholder.textContent = 'Audio file not found — 오디오 파일을 추가해주세요';
+  }, { once: true });
+}
+
+function startSurvey() {
+  // Build questions
+  buildQuestions('questions1', 's1');
+  buildQuestions('questions2', 's2');
+
+  // Set labels
+  const labelText1 = order[0] === 'before' ? 'Sound A' : 'Sound A';
+  const labelText2 = order[1] === 'before' ? 'Sound B' : 'Sound B';
+  document.getElementById('label1').textContent = labelText1;
+  document.getElementById('label2').textContent = labelText2;
+
+  // Don't reveal which is before/after to the participant
+  document.getElementById('audio-label-1').textContent = 'Sound A';
+  document.getElementById('audio-label-2').textContent = 'Sound B';
+
+  // Setup audio
+  setupAudio('audio1', 'audio1-src', 'audio1-placeholder', order[0]);
+  setupAudio('audio2', 'audio2-src', 'audio2-placeholder', order[1]);
+
+  goTo('sec-audio1');
+  document.getElementById('progress-bar').style.display = 'block';
+  setProgress(33);
+}
+
+function goTo(sectionId) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById(sectionId).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  if (sectionId === 'sec-intro') {
+    document.getElementById('progress-bar').style.display = 'none';
+  }
+  if (sectionId === 'sec-audio1') setProgress(33);
+  if (sectionId === 'sec-audio2') setProgress(66);
+}
+
+function setProgress(pct) {
+  document.getElementById('progress-fill').style.width = pct + '%';
+}
+
+function validateSection(prefix) {
+  let valid = true;
+  const totalQs = QUESTIONS.length + 1; // +1 for overall
+
+  for (let i = 0; i < QUESTIONS.length; i++) {
+    const name = `${prefix}_q${i}`;
+    const checked = document.querySelector(`input[name="${name}"]:checked`);
+    const qDiv = document.querySelector(`[data-q="${name}"]`);
+    if (!checked) {
+      qDiv.classList.add('incomplete');
+      valid = false;
+    } else {
+      qDiv.classList.remove('incomplete');
+    }
+  }
+
+  const overallChecked = document.querySelector(`input[name="${prefix}_overall"]:checked`);
+  const overallDiv = document.querySelector(`[data-q="${prefix}_overall"]`);
+  if (!overallChecked) {
+    overallDiv.classList.add('incomplete');
+    valid = false;
+  } else {
+    overallDiv.classList.remove('incomplete');
+  }
+
+  return valid;
+}
+
+function nextSection(fromSection) {
+  const prefix = `s${fromSection}`;
+  const warnEl = document.getElementById(`warn${fromSection}`);
+
+  if (!validateSection(prefix)) {
+    warnEl.classList.add('show');
+    // Scroll to first incomplete
+    const first = document.querySelector(`#sec-audio${fromSection} .question.incomplete`);
+    if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+
+  warnEl.classList.remove('show');
+  goTo('sec-audio2');
+}
+
+function collectData() {
+  const data = {
+    timestamp: new Date().toISOString(),
+    order: order.join(','),  // e.g. "before,after" or "after,before"
+  };
+
+  // Collect for each section
+  ['s1', 's2'].forEach((prefix, sIdx) => {
+    const audioType = order[sIdx]; // "before" or "after"
+
+    QUESTIONS.forEach((q, i) => {
+      const val = document.querySelector(`input[name="${prefix}_q${i}"]:checked`);
+      data[`${audioType}_${q.en.toLowerCase().replace(/[^a-z]/g, '_')}`] = val ? val.value : '';
+    });
+
+    const overall = document.querySelector(`input[name="${prefix}_overall"]:checked`);
+    data[`${audioType}_overall`] = overall ? overall.value : '';
+  });
+
+  return data;
+}
+
+async function submitSurvey() {
+  if (!validateSection('s2')) {
+    document.getElementById('warn2').classList.add('show');
+    const first = document.querySelector('#sec-audio2 .question.incomplete');
+    if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+
+  const data = collectData();
+
+  if (!GOOGLE_SCRIPT_URL) {
+    console.log('Survey data (no Google Script URL configured):', data);
+    showThanks();
+    return;
+  }
+
+  // Show loading
+  document.getElementById('loading').classList.add('show');
+
+  try {
+    await fetch(GOOGLE_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    showThanks();
+  } catch (err) {
+    console.error('Submit error:', err);
+    alert('제출 중 오류가 발생했습니다. 다시 시도해주세요.\nSubmission error. Please try again.');
+  } finally {
+    document.getElementById('loading').classList.remove('show');
+  }
+}
+
+function showThanks() {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById('sec-thanks').classList.add('active');
+  document.getElementById('progress-bar').style.display = 'none';
+  document.getElementById('sec-thanks').style.display = 'block';
+}
+</script>
+
+</body>
+</html>
